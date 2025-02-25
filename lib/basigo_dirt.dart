@@ -1,5 +1,6 @@
 import 'package:basigo_dirt/config/theme.dart';
 import 'package:basigo_dirt/core/routes.dart';
+import 'package:basigo_dirt/core/widgets/offline_widget/offline_widget.dart';
 import 'package:basigo_dirt/modules/auth/presentation/pages/splash.page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -19,7 +20,14 @@ class BasigoDirt extends StatelessWidget {
           getPages: NavRoutes.pages,
           debugShowCheckedModeBanner: false,
           smartManagement: SmartManagement.keepFactory,
-          builder: EasyLoading.init(),
+          builder: EasyLoading.init(
+            builder: (context, child) => Stack(
+              children: [
+                child!,
+                const OfflineWidget(),
+              ],
+            ),
+          ),
           defaultTransition: Transition.rightToLeft,
         );
       },

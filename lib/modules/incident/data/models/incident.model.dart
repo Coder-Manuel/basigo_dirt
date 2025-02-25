@@ -65,6 +65,20 @@ class IncidentModel extends Incident {
         'isSynced': isSynced,
       };
 
+  factory IncidentModel.fromEntity(Incident entity) => IncidentModel(
+        id: entity.id,
+        title: entity.title,
+        location: entity.location,
+        description: entity.description,
+        imageUrl: entity.imageUrl,
+        dispatchComments: entity.dispatchComments,
+        status: entity.status,
+        severity: entity.severity,
+        createdAt: entity.createdAt,
+        updatedAt: entity.updatedAt,
+        isSynced: entity.isSynced,
+      );
+
   String get toJson => jsonEncode(toMap);
 
   factory IncidentModel.fromJson(String jsonString) => IncidentModel.fromMap(
