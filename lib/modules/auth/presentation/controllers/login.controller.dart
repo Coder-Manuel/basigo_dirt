@@ -1,18 +1,46 @@
+import 'package:basigo_dirt/core/widgets/app_snackbar.dart';
+import 'package:basigo_dirt/core/widgets/loader.dart';
+import 'package:basigo_dirt/modules/auth/domain/usecases/login.usecase.dart';
 import 'package:basigo_dirt/modules/incident/presentation/pages/driver_incidents_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class LoginController extends GetxController {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final emailCTRL = TextEditingController();
   final passwordCTRL = TextEditingController();
 
   Rx<bool> showPassword = false.obs;
+
+  LoginUseCase get loginUsecase => LoginUseCase();
 
   void togglePasswordVisibility() {
     showPassword.value = !showPassword.value;
   }
 
   Future<void> login() async {
-    Get.offNamed(DriverIncidentsPage.route);
+    if (formKey.currentState?.validate() == true) {
+      Loader.show('Verifying...');
+      final response = await loginUsecase.call(
+        (
+          email: emailCTRL.text.trim(),
+          password: passwordCTRL.text.trim(),
+        ),
+      );
+      Loader.dismiss();
+
+      response.fold((ex) {
+        AppSnackBar.show(ex.message, status: SnackBarStatus.error);
+      }, (data) {
+        reset();
+        Get.offNamed(DriverIncidentsPage.route);
+        AppSnackBar.show('Welcome ${data.name}');
+      });
+    }
+  }
+
+  void reset() {
+    emailCTRL.clear();
+    passwordCTRL.clear();
   }
 }

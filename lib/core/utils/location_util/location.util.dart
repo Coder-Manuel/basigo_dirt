@@ -14,7 +14,7 @@ class LocationUtil {
   static Future<(Position, String?)?> getCurrentPosition() async {
     Position? currentLocation;
 
-    await ErrorWrapper.wrap(
+    await ErrorWrapper.async(
       () async {
         LocationPermission permission = await Geolocator.checkPermission();
 

@@ -25,7 +25,7 @@ class IncidentRepositoryImpl implements IncidentRepository {
 
   @override
   Future<RepoReponse<Incident>> createIncident(Incident incident) async {
-    final response = await ErrorWrapper.wrap<RepoReponse<Incident>>(
+    final response = await ErrorWrapper.async<RepoReponse<Incident>>(
       () async {
         if (connectivityCTRL.isConnected) {
           String? imageUrl = incident.imageUrl;

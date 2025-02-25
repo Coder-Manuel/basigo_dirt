@@ -28,7 +28,7 @@ class OfflineWidget extends GetView<ConnectivityController> {
                   alignment: Alignment.bottomCenter,
                   child: Material(
                     child: AnimatedContainer(
-                      width: Get.width,
+                      width: double.infinity,
                       duration: const Duration(milliseconds: 800),
                       padding: const EdgeInsets.symmetric(vertical: 2),
                       decoration: BoxDecoration(color: Colors.red.shade800),
@@ -55,7 +55,7 @@ class OfflineWidget extends GetView<ConnectivityController> {
                       alignment: Alignment.bottomCenter,
                       child: Material(
                         child: AnimatedContainer(
-                          width: Get.width,
+                          width: double.infinity,
                           duration: const Duration(milliseconds: 800),
                           padding: const EdgeInsets.symmetric(vertical: 2),
                           decoration: BoxDecoration(

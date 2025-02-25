@@ -1,6 +1,4 @@
 import 'package:basigo_dirt/core/utils/logger.util.dart';
-import 'package:basigo_dirt/firebase_options.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 
 class MonitorService {
@@ -8,11 +6,6 @@ class MonitorService {
   ///
   /// It also sends bug report to the server for analysis.
   static Future<void> init() async {
-    // * Initialize Firebase.
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-
     FlutterError.onError = (FlutterErrorDetails details) async {
       // * Doing this to silence the error by cache_network_image library
       if (details.library != 'image resource service') {

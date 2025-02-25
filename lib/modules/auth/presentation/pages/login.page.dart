@@ -26,70 +26,79 @@ class LoginPage extends GetView<LoginController> {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            50.0.h,
-            Text(
-              'Login',
-              style: Get.textTheme.displaySmall
-                  ?.copyWith(fontWeight: FontWeight.bold),
-            ),
-            15.0.h,
-            Text(
-              'Welcome, fill in your credentials to proceed',
-              style: Get.textTheme.headlineSmall,
-            ),
-            20.0.h,
-            TextFormField(
-              controller: controller.emailCTRL,
-              validator: (v) {
-                if (v?.isEmail == false) {
-                  return 'Invalid Email';
-                }
-                return null;
-              },
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              decoration: const InputDecoration(
-                label: Text('Email'),
-                hintText: 'Enter Email Address',
-                prefixIcon: Icon(Icons.person_outline_rounded),
+        child: Form(
+          key: controller.formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              50.0.h,
+              Text(
+                'Login',
+                style: Get.textTheme.displaySmall
+                    ?.copyWith(fontWeight: FontWeight.bold),
               ),
-            ),
-            20.0.h,
-            Obx(
-              () {
-                return TextFormField(
-                  controller: controller.passwordCTRL,
-                  obscureText: !controller.showPassword.value,
-                  decoration: InputDecoration(
-                    label: const Text('Password'),
-                    hintText: 'Enter Password',
-                    prefixIcon: const Icon(Icons.lock_outline_rounded),
-                    suffixIcon: GestureDetector(
-                      onTap: controller.togglePasswordVisibility,
-                      child: Icon(
-                        controller.showPassword.value
-                            ? Icons.visibility_outlined
-                            : Icons.visibility_off_outlined,
+              15.0.h,
+              Text(
+                'Welcome, fill in your credentials to proceed',
+                style: Get.textTheme.headlineSmall,
+              ),
+              20.0.h,
+              TextFormField(
+                controller: controller.emailCTRL,
+                validator: (v) {
+                  if (v?.isEmail == false) {
+                    return 'Invalid Email';
+                  }
+                  return null;
+                },
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                decoration: const InputDecoration(
+                  label: Text('Email'),
+                  hintText: 'Enter Email Address',
+                  prefixIcon: Icon(Icons.person_outline_rounded),
+                ),
+              ),
+              20.0.h,
+              Obx(
+                () {
+                  return TextFormField(
+                    controller: controller.passwordCTRL,
+                    obscureText: !controller.showPassword.value,
+                    validator: (v) {
+                      if (v?.isEmpty == true) {
+                        return 'Password is missing';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      label: const Text('Password'),
+                      hintText: 'Enter Password',
+                      prefixIcon: const Icon(Icons.lock_outline_rounded),
+                      suffixIcon: GestureDetector(
+                        onTap: controller.togglePasswordVisibility,
+                        child: Icon(
+                          controller.showPassword.value
+                              ? Icons.visibility_outlined
+                              : Icons.visibility_off_outlined,
+                        ),
                       ),
                     ),
-                  ),
-                );
-              },
-            ),
-            50.0.h,
-            ElevatedButton(
-              onPressed: () async => await controller.login(),
-              style: Get.theme.elevatedButtonTheme.style?.copyWith(
-                minimumSize: WidgetStatePropertyAll(Size(Get.width, 45)),
+                  );
+                },
               ),
-              child: const Text(
-                'Login',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              50.0.h,
+              ElevatedButton(
+                onPressed: () async => await controller.login(),
+                style: Get.theme.elevatedButtonTheme.style?.copyWith(
+                  minimumSize: WidgetStatePropertyAll(Size(Get.width, 45)),
+                ),
+                child: const Text(
+                  'Login',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
