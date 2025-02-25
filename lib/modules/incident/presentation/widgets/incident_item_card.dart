@@ -19,10 +19,10 @@ class IncidentItemCard extends StatelessWidget {
     return SizedBox(
       height: 120,
       child: Card(
-        elevation: 2,
+        elevation: 1.5,
         surfaceTintColor: incident.status.isDone
             ? Colors.grey[700]
-            : incident.severity.color.withOpacity(0.1),
+            : incident.severity.color.withOpacity(0.06),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -93,10 +93,25 @@ class _ItemCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  incident.title,
-                  overflow: TextOverflow.ellipsis,
-                  style: Get.textTheme.titleMedium,
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        incident.title,
+                        overflow: TextOverflow.ellipsis,
+                        style: Get.textTheme.titleMedium,
+                      ),
+                    ),
+                    2.w,
+                    Icon(
+                      incident.isSynced
+                          ? Icons.done_all_rounded
+                          : Icons.done_rounded,
+                      color: incident.isSynced
+                          ? Get.theme.primaryColor
+                          : Colors.orange,
+                    )
+                  ],
                 ),
                 15.0.h,
                 Row(
@@ -137,7 +152,10 @@ class _ItemCard extends StatelessWidget {
                         const Icon(Icons.timer_outlined, size: 15),
                         2.0.w,
                         Text(
-                          format(incident.createdAt),
+                          format(incident.createdAt).replaceAll(
+                            'minute',
+                            'min',
+                          ),
                           style: Get.textTheme.bodySmall,
                         ),
                       ],

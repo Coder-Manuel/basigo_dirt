@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:basigo_dirt/core/enums/incident.enum.dart';
+import 'package:basigo_dirt/modules/auth/data/models/user.model.dart';
+import 'package:basigo_dirt/modules/auth/domain/entities/user.entity.dart';
 import 'package:basigo_dirt/modules/incident/data/models/location.model.dart';
 import 'package:basigo_dirt/modules/incident/domain/entities/incident.entity.dart';
 import 'package:basigo_dirt/modules/incident/domain/entities/location.entity.dart';
@@ -15,6 +17,8 @@ class IncidentModel extends Incident {
     Location? location,
     IncidentStatus? status,
     required super.severity,
+    required super.driver,
+    super.dispatch,
     DateTime? createdAt,
     super.updatedAt,
     super.isSynced = false,
@@ -44,6 +48,9 @@ class IncidentModel extends Incident {
           (v) => v.name == map['severity'],
           orElse: () => IncidentSeverity.low,
         ),
+        driver: UserModel.fromMap(map['driver']),
+        dispatch:
+            map['dispatch'] != null ? UserModel.fromMap(map['dispatch']) : null,
         createdAt:
             map['createdAt'] != null ? DateTime.parse(map['createdAt']) : null,
         updatedAt:
@@ -60,6 +67,9 @@ class IncidentModel extends Incident {
         'dispatchComments': dispatchComments,
         'status': status.name,
         'severity': severity.name,
+        'driver': UserModel.fromEntity(driver).toMap,
+        'dispatch':
+            dispatch == null ? null : UserModel.fromEntity(dispatch!).toMap,
         'createdAt': createdAt.toIso8601String(),
         'updatedAt': updatedAt?.toIso8601String(),
         'isSynced': isSynced,
@@ -74,6 +84,8 @@ class IncidentModel extends Incident {
         dispatchComments: entity.dispatchComments,
         status: entity.status,
         severity: entity.severity,
+        driver: entity.driver,
+        dispatch: entity.dispatch,
         createdAt: entity.createdAt,
         updatedAt: entity.updatedAt,
         isSynced: entity.isSynced,
@@ -93,6 +105,8 @@ class IncidentModel extends Incident {
     String? dispatchComments,
     IncidentStatus? status,
     IncidentSeverity? severity,
+    User? driver,
+    User? dispatch,
     DateTime? updatedAt,
     bool? isSynced,
   }) =>
@@ -105,6 +119,8 @@ class IncidentModel extends Incident {
         dispatchComments: dispatchComments ?? this.dispatchComments,
         status: status ?? this.status,
         severity: severity ?? this.severity,
+        driver: driver ?? this.driver,
+        dispatch: dispatch ?? this.dispatch,
         createdAt: createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
         isSynced: isSynced ?? this.isSynced,

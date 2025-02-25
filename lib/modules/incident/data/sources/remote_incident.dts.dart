@@ -6,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 abstract class RemoteIncidentDataSource {
   Future<void> saveIncident(IncidentModel incident);
   Future<String?> uploadImage(File image);
-  Stream<List<IncidentModel>> getIncidents({
+  Stream<List<IncidentModel>> streamIncidents({
     int limit = 10,
     List<IncidentModel>? startAfter,
   });
@@ -31,7 +31,7 @@ class RemoteIncidentDTSImpl extends RemoteIncidentDataSource {
   }
 
   @override
-  Stream<List<IncidentModel>> getIncidents({
+  Stream<List<IncidentModel>> streamIncidents({
     int limit = 10,
     List<IncidentModel>? startAfter,
   }) {

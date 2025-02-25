@@ -5,6 +5,7 @@ import 'package:basigo_dirt/core/utils/io_util/io_util.dart';
 import 'package:basigo_dirt/core/utils/location_util/location.util.dart';
 import 'package:basigo_dirt/core/widgets/app_snackbar.dart';
 import 'package:basigo_dirt/core/widgets/loader.dart';
+import 'package:basigo_dirt/modules/auth/domain/usecases/current_user.usecase.dart';
 import 'package:basigo_dirt/modules/incident/data/models/incident.model.dart';
 import 'package:basigo_dirt/modules/incident/domain/entities/location.entity.dart';
 import 'package:basigo_dirt/modules/incident/domain/usecases/create_incident.usecase.dart';
@@ -21,7 +22,8 @@ class CreateIncidentController extends GetxController {
   Rx<Location?> location = Rx(null);
   Rx<File?> media = Rx(null);
 
-  final createIncidentUsecase = CreateIncidentUseCase();
+  CurrentUserUseCase get userUsecase => CurrentUserUseCase();
+  CreateIncidentUseCase get createIncidentUsecase => CreateIncidentUseCase();
 
   Future<void> getImage() async {
     final file = await IOUtil.getImageModal();
@@ -50,6 +52,7 @@ class CreateIncidentController extends GetxController {
           description: descriptionCTRL.text.trim(),
           location: location.value,
           imageUrl: media.value?.path,
+          driver: userUsecase.user!,
         ),
       );
       Loader.dismiss();

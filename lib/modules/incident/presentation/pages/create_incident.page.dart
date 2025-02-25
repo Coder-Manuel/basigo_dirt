@@ -37,6 +37,7 @@ class CreateIncidentPage extends GetView<CreateIncidentController> {
                 ),
                 10.0.h,
                 TextFormField(
+                  controller: controller.titleCTRL,
                   maxLength: 25,
                   maxLengthEnforcement: MaxLengthEnforcement.enforced,
                   validator: (v) {
@@ -116,6 +117,7 @@ class CreateIncidentPage extends GetView<CreateIncidentController> {
                 ),
                 5.0.h,
                 TextFormField(
+                  controller: controller.descriptionCTRL,
                   maxLength: 180,
                   minLines: 1,
                   maxLines: 5,

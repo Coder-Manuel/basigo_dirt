@@ -2,6 +2,7 @@ import 'package:basigo_dirt/core/widgets/loading_shimmer.dart';
 import 'package:basigo_dirt/modules/incident/presentation/controllers/driver_incidents.controller.dart';
 import 'package:basigo_dirt/modules/incident/presentation/pages/create_incident.page.dart';
 import 'package:basigo_dirt/modules/incident/presentation/widgets/incident_item_card.dart';
+import 'package:basigo_dirt/modules/incident/presentation/widgets/no_incidemts_plaholder.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -40,6 +41,7 @@ class DriverIncidentsPage extends GetView<DriverIncidentsController> {
                 );
               },
               onLoading: const LoadingShimmer(),
+              onEmpty: const NoIncidentsPlaceholder(),
             );
           },
         ),

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -5,6 +7,10 @@ class ConnectivityController extends GetxController {
   Rx<bool> isInitialAppOpen = true.obs;
   Rx<bool> showConnectedIndicator = false.obs;
   Rx<ConnectivityStatus> connectivity = ConnectivityStatus.pending.obs;
+
+  final _connectivityStreamController = StreamController<bool>.broadcast();
+  Stream<bool> get onConnectivityChanged =>
+      _connectivityStreamController.stream;
 
   bool get isConnected {
     return connectivity.value != ConnectivityStatus.disconnected;
@@ -18,6 +24,8 @@ class ConnectivityController extends GetxController {
     }
     update();
 
+    _connectivityStreamController.add(status);
+
     if (!isInitialAppOpen.value && status) {
       showConnectedIndicator.value = true;
       Future.delayed(const Duration(seconds: 3), () {
@@ -26,6 +34,12 @@ class ConnectivityController extends GetxController {
     }
 
     isInitialAppOpen.value = false;
+  }
+
+  @override
+  void onClose() {
+    _connectivityStreamController.close();
+    super.onClose();
   }
 }
 

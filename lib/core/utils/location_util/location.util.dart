@@ -1,6 +1,8 @@
 import 'package:basigo_dirt/core/utils/error_util/error_wrapper.dart';
+import 'package:basigo_dirt/core/widgets/offline_widget/connectivity_controller.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
 
 /// Utility that hosts the Location methods
 class LocationUtil {
@@ -14,7 +16,7 @@ class LocationUtil {
   static Future<(Position, String?)?> getCurrentPosition() async {
     Position? currentLocation;
 
-    await ErrorWrapper.async(
+    return await ErrorWrapper.async<(Position, String?)?>(
       () async {
         LocationPermission permission = await Geolocator.checkPermission();
 
@@ -31,20 +33,26 @@ class LocationUtil {
             ),
           );
         }
+
+        if (currentLocation != null) {
+          final connectivityCTRL = Get.find<ConnectivityController>();
+
+          if (connectivityCTRL.isConnected) {
+            final placemark = await placemarkFromCoordinates(
+              currentLocation!.latitude,
+              currentLocation!.longitude,
+            );
+
+            return (currentLocation!, placemark.reversed.firstOrNull?.name);
+          }
+
+          return (currentLocation!, 'NA');
+        }
+
+        return null;
       },
       library: _library,
       description: 'while fetching the location from the device',
     );
-
-    if (currentLocation != null) {
-      final placemark = await placemarkFromCoordinates(
-        currentLocation!.latitude,
-        currentLocation!.longitude,
-      );
-
-      return (currentLocation!, placemark.reversed.firstOrNull?.name);
-    }
-
-    return null;
   }
 }

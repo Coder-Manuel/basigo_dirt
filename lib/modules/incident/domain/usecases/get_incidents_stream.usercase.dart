@@ -11,4 +11,6 @@ class GetIncidentsStreamUseCase extends UseCase<Stream<List<Incident>>, bool> {
   RepoReponse<Stream<List<Incident>>> call(bool params) {
     return _incidentRepository.getIncidentsStream(loadMore: params);
   }
+
+  void dispose() => _incidentRepository.disposeStream();
 }

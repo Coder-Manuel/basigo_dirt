@@ -4,4 +4,5 @@ import 'package:basigo_dirt/modules/incident/domain/entities/incident.entity.dar
 abstract class IncidentRepository {
   Future<RepoReponse<Incident>> createIncident(Incident incident);
   RepoReponse<Stream<List<Incident>>> getIncidentsStream({bool loadMore});
+  void disposeStream();
 }

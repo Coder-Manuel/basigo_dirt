@@ -21,11 +21,17 @@ class UserModel extends User {
         createdAt: DateTime.tryParse('${map['createdAt']}'),
       );
 
+  factory UserModel.fromEntity(User entity) => UserModel(
+        id: entity.id,
+        name: entity.name,
+        role: entity.role,
+        createdAt: entity.createdAt,
+      );
+
   Map<String, dynamic> get toMap => {
         'id': id,
         'name': name,
         'role': role.name,
-        'createdAt': createdAt?.toIso8601String(),
       };
 
   String get toJson => jsonEncode(toMap);
