@@ -1,4 +1,5 @@
 import 'package:basigo_dirt/core/utils/error_util/error_wrapper.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
 /// Utility that hosts the Location methods
@@ -10,7 +11,7 @@ class LocationUtil {
   /// It might return [null] if the [LocationPermission] is not enabled.
   ///
   /// The [LocationAccuracy] is set to Best
-  static Future<Position?> getCurrentPosition() async {
+  static Future<(Position, String?)?> getCurrentPosition() async {
     Position? currentLocation;
 
     await ErrorWrapper.wrap(
@@ -35,6 +36,15 @@ class LocationUtil {
       description: 'while fetching the location from the device',
     );
 
-    return currentLocation;
+    if (currentLocation != null) {
+      final placemark = await placemarkFromCoordinates(
+        currentLocation!.latitude,
+        currentLocation!.longitude,
+      );
+
+      return (currentLocation!, placemark.reversed.firstOrNull?.name);
+    }
+
+    return null;
   }
 }

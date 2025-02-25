@@ -179,7 +179,7 @@ class ShimmerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Shimmer.fromColors(
-        baseColor: Get.theme.colorScheme.secondary.withOpacity(0.2),
+        baseColor: Get.theme.primaryColor.withOpacity(0.2),
         highlightColor: Get.theme.scaffoldBackgroundColor,
         period: const Duration(milliseconds: 1400),
         child: Container(

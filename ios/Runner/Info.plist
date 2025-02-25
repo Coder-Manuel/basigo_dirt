@@ -45,5 +45,7 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>BasiGo D.I.R.T needs location access to provide precise location for incident reporting</string>
 </dict>
 </plist>

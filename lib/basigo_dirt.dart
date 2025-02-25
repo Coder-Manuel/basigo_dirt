@@ -1,6 +1,6 @@
 import 'package:basigo_dirt/config/theme.dart';
 import 'package:basigo_dirt/core/routes.dart';
-import 'package:basigo_dirt/modules/auth/presentation/pages/splash_page.dart';
+import 'package:basigo_dirt/modules/auth/presentation/pages/splash.page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';

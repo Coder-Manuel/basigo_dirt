@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:basigo_dirt/core/enums/incident.enum.dart';
-import 'package:basigo_dirt/modules/incident/domain/entities/incident.enity.dart';
+import 'package:basigo_dirt/modules/incident/data/models/location.model.dart';
+import 'package:basigo_dirt/modules/incident/domain/entities/incident.entity.dart';
+import 'package:basigo_dirt/modules/incident/domain/entities/location.entity.dart';
 import 'package:uuid/uuid.dart';
 
 class IncidentModel extends Incident {
@@ -8,6 +10,9 @@ class IncidentModel extends Incident {
     String? id,
     required super.title,
     super.description,
+    super.imageUrl,
+    super.dispatchComments,
+    Location? location,
     IncidentStatus? status,
     required super.severity,
     DateTime? createdAt,
@@ -15,14 +20,20 @@ class IncidentModel extends Incident {
     super.isSynced = false,
   }) : super(
           id: id ?? const Uuid().v4(),
-          status: status ?? IncidentStatus.inProgess,
+          location: location ?? LocationModel.nan,
+          status: status ?? IncidentStatus.pending,
           createdAt: createdAt ?? DateTime.now(),
         );
 
   factory IncidentModel.fromMap(Map<String, dynamic> map) => IncidentModel(
         id: map['id'] ?? '',
         title: map['title'] ?? 'NA',
+        location: map['location'] != null
+            ? LocationModel.fromMap(map['location'])
+            : null,
         description: map['description'],
+        imageUrl: map['imageUrl'],
+        dispatchComments: map['dispatchComments'],
         status: map['status'] != null
             ? IncidentStatus.values.firstWhere(
                 (v) => v.name == map['status'],
@@ -43,7 +54,10 @@ class IncidentModel extends Incident {
   Map<String, dynamic> get toMap => {
         'id': id,
         'title': title,
+        'location': LocationModel.fromEntity(location).toMap,
         'description': description,
+        'imageUrl': imageUrl,
+        'dispatchComments': dispatchComments,
         'status': status.name,
         'severity': severity.name,
         'createdAt': createdAt.toIso8601String(),
@@ -58,21 +72,27 @@ class IncidentModel extends Incident {
       );
 
   IncidentModel copyWith({
-    String? titleCpy,
-    String? descriptionCpy,
-    IncidentStatus? statusCpy,
-    IncidentSeverity? severityCpy,
-    DateTime? updatedAtCpy,
-    bool? isSyncedCpy,
+    String? title,
+    Location? location,
+    String? description,
+    String? imageUrl,
+    String? dispatchComments,
+    IncidentStatus? status,
+    IncidentSeverity? severity,
+    DateTime? updatedAt,
+    bool? isSynced,
   }) =>
       IncidentModel(
         id: id,
-        title: titleCpy ?? title,
-        description: descriptionCpy ?? description,
-        status: statusCpy ?? status,
-        severity: severityCpy ?? severity,
+        title: title ?? this.title,
+        location: location ?? this.location,
+        description: description ?? this.description,
+        imageUrl: imageUrl ?? this.imageUrl,
+        dispatchComments: dispatchComments ?? this.dispatchComments,
+        status: status ?? this.status,
+        severity: severity ?? this.severity,
         createdAt: createdAt,
-        updatedAt: updatedAtCpy ?? updatedAt,
-        isSynced: isSyncedCpy ?? isSynced,
+        updatedAt: updatedAt ?? this.updatedAt,
+        isSynced: isSynced ?? this.isSynced,
       );
 }
