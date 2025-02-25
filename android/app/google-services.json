@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "275227268668",
+    "project_id": "basigo-5fb11",
+    "storage_bucket": "basigo-5fb11.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:275227268668:android:1a7375bd951c17a9b11539",
+        "android_client_info": {
+          "package_name": "com.basigo.dirt"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1UAUgxDXryitgX-H8hXLCTvKn6AfdCZc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
