@@ -24,7 +24,9 @@ class LatestIncidentsView extends GetView<DriverIncidentsController> {
               },
             );
           },
-          onLoading: const SliverToBoxAdapter(child: LoadingShimmer(length: 1)),
+          onLoading: const SliverToBoxAdapter(
+            child: LoadingShimmer(length: 1, width: 80),
+          ),
           onEmpty: const SliverToBoxAdapter(
             child: NoIncidentsPlaceholder(topMargin: 20),
           ),

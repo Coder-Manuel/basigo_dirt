@@ -81,12 +81,15 @@ class Themes {
         headlineSmall: Get.theme.textTheme.headlineSmall?.copyWith(
           color: Colors.grey[600],
           fontSize: 20,
+          inherit: true,
         ),
         bodySmall: Get.theme.textTheme.bodySmall?.copyWith(
           color: Colors.grey[600],
+          inherit: true,
         ),
         bodyMedium: Get.theme.textTheme.bodyMedium?.copyWith(
           color: Colors.grey[600],
+          inherit: true,
         ),
       ),
     );
