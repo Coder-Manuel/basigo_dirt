@@ -16,7 +16,7 @@ class ConnectivityController extends GetxController {
     return connectivity.value != ConnectivityStatus.disconnected;
   }
 
-  void onConnectionUpdate(BuildContext _, bool status) {
+  void onConnectionUpdate(BuildContext? _, bool status) {
     if (status) {
       connectivity.value = ConnectivityStatus.connected;
     } else {

@@ -58,9 +58,12 @@ class IncidentRepositoryImpl implements IncidentRepository {
             imageUrl: imageUrl,
             isSynced: true,
           );
-          await remoteDataSource.saveIncident(model);
+          final savedModel = await remoteDataSource.saveIncident(model);
+          if (savedModel == null) {
+            return FailureResponse('Unable to create incident, Kindly Retry');
+          }
 
-          return SuccessResponse(model);
+          return SuccessResponse(savedModel);
         } else {
           final model = IncidentModel.fromEntity(incident);
           await localDataSource.saveIncident(model);

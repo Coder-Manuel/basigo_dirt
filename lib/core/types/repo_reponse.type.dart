@@ -1,17 +1,17 @@
 import 'package:dartz/dartz.dart';
 
-typedef RepoReponse<T> = Either<_Failure, T>;
+typedef RepoReponse<T> = Either<ApiFail, T>;
 
-class _Failure implements Exception {
+class ApiFail implements Exception {
   final String message;
 
-  _Failure(this.message);
+  ApiFail(this.message);
 }
 
-class FailureResponse<T> extends Left<_Failure, T> {
-  FailureResponse(String message) : super(_Failure(message));
+class FailureResponse<T> extends Left<ApiFail, T> {
+  FailureResponse(String message) : super(ApiFail(message));
 }
 
-class SuccessResponse<T> extends Right<_Failure, T> {
+class SuccessResponse<T> extends Right<ApiFail, T> {
   SuccessResponse(super.data);
 }

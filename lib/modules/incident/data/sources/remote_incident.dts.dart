@@ -4,7 +4,8 @@ import 'package:basigo_dirt/modules/incident/data/models/incident.model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 abstract class RemoteIncidentDataSource {
-  Future<void> saveIncident(IncidentModel incident);
+  Future<IncidentModel?> saveIncident(IncidentModel incident);
+  Future<IncidentModel?> getIncidentById(String id);
   Future<String?> uploadImage(File image);
   Future<List<IncidentModel>> getIncidents({DateTime? startDate});
   Stream<List<IncidentModel>> streamIncidents({String? userId});
@@ -12,13 +13,28 @@ abstract class RemoteIncidentDataSource {
 
 class RemoteIncidentDTSImpl extends RemoteIncidentDataSource {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  CollectionReference get collection => firestore.collection('incidents');
 
   @override
-  Future<void> saveIncident(IncidentModel incident) async {
-    await firestore
-        .collection('incidents')
+  Future<IncidentModel?> getIncidentById(String id) async {
+    final document = await collection
+        .doc(id)
+        .withConverter(
+          fromFirestore: (snap, _) => IncidentModel.fromMap(snap.data() ?? {}),
+          toFirestore: (data, _) => data.toMap,
+        )
+        .get();
+
+    return document.data();
+  }
+
+  @override
+  Future<IncidentModel?> saveIncident(IncidentModel incident) async {
+    await collection
         .doc(incident.id)
         .set(incident.toMap, SetOptions(merge: true));
+
+    return getIncidentById(incident.id);
   }
 
   @override
@@ -32,8 +48,7 @@ class RemoteIncidentDTSImpl extends RemoteIncidentDataSource {
   Future<List<IncidentModel>> getIncidents({
     DateTime? startDate,
   }) async {
-    Query<IncidentModel> query = firestore
-        .collection('incidents')
+    Query<IncidentModel> query = collection
         .orderBy('createdAt', descending: true)
         .withConverter(
           fromFirestore: (snap, _) => IncidentModel.fromMap(snap.data() ?? {}),
@@ -54,8 +69,7 @@ class RemoteIncidentDTSImpl extends RemoteIncidentDataSource {
 
   @override
   Stream<List<IncidentModel>> streamIncidents({String? userId}) {
-    Query<IncidentModel> query = firestore
-        .collection('incidents')
+    Query<IncidentModel> query = collection
         .orderBy('createdAt', descending: true)
         .withConverter(
           fromFirestore: (snap, _) => IncidentModel.fromMap(snap.data() ?? {}),
