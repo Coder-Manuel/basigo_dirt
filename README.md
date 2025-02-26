@@ -68,5 +68,10 @@ This project uses **GetX** for state management because of its simplicity, high 
 
 ## Optional Extras
 
-- Auth module -- Just login and role-based-access (RBAC) management. No signup page e.t.c
+- *Auth module* -- Just login and role-based-access (RBAC) management. No signup page e.t.c
+  - Login Accounts
+      1. Dispatch:  ``dispatch@test.com  - dispatch``
+      2. Driver1:    ``driver1@test.com  - driver1``
+      3. Driver2:    ``driver2@test.com -  driver2``
+      4. Driver3:    ``driver3@test.com -  driver3``
 - Anlytics Dashboard -- A simple dashboard with key data shown when a dispatch has logged in.
