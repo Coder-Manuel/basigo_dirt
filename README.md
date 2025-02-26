@@ -75,3 +75,7 @@ This project uses **GetX** for state management because of its simplicity, high 
       3. Driver2:    ``driver2@test.com -  driver2``
       4. Driver3:    ``driver3@test.com -  driver3``
 - Anlytics Dashboard -- A simple dashboard with key data shown when a dispatch has logged in.
+
+## Demo
+
+- There's a demo video here `demo.mp4` to take a sneak look into what this codebase entails.
