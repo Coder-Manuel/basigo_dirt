@@ -3,15 +3,21 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i3;
-import 'dart:io' as _i5;
+import 'dart:async' as _i4;
+import 'dart:io' as _i6;
 
+import 'package:basigo_dirt/modules/auth/data/models/user.model.dart' as _i9;
+import 'package:basigo_dirt/modules/auth/data/sources/local_auth.dts.dart'
+    as _i10;
+import 'package:basigo_dirt/modules/auth/data/sources/remote_auth_dts.dart'
+    as _i8;
 import 'package:basigo_dirt/modules/incident/data/models/incident.model.dart'
-    as _i4;
+    as _i5;
 import 'package:basigo_dirt/modules/incident/data/sources/local_incident.dts.dart'
-    as _i6;
+    as _i7;
 import 'package:basigo_dirt/modules/incident/data/sources/remote_incident.dts.dart'
-    as _i2;
+    as _i3;
+import 'package:firebase_auth/firebase_auth.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -27,45 +33,56 @@ import 'package:mockito/mockito.dart' as _i1;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
+class _FakeUserCredential_0 extends _i1.SmartFake
+    implements _i2.UserCredential {
+  _FakeUserCredential_0(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
 /// A class which mocks [RemoteIncidentDataSource].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockRemoteIncidentDataSource extends _i1.Mock
-    implements _i2.RemoteIncidentDataSource {
+    implements _i3.RemoteIncidentDataSource {
   @override
-  _i3.Future<_i4.IncidentModel?> saveIncident(_i4.IncidentModel? incident) =>
+  _i4.Future<_i5.IncidentModel?> saveIncident(_i5.IncidentModel? incident) =>
       (super.noSuchMethod(
         Invocation.method(
           #saveIncident,
           [incident],
         ),
-        returnValue: _i3.Future<_i4.IncidentModel?>.value(),
-        returnValueForMissingStub: _i3.Future<_i4.IncidentModel?>.value(),
-      ) as _i3.Future<_i4.IncidentModel?>);
+        returnValue: _i4.Future<_i5.IncidentModel?>.value(),
+        returnValueForMissingStub: _i4.Future<_i5.IncidentModel?>.value(),
+      ) as _i4.Future<_i5.IncidentModel?>);
 
   @override
-  _i3.Future<_i4.IncidentModel?> getIncidentById(String? id) =>
+  _i4.Future<_i5.IncidentModel?> getIncidentById(String? id) =>
       (super.noSuchMethod(
         Invocation.method(
           #getIncidentById,
           [id],
         ),
-        returnValue: _i3.Future<_i4.IncidentModel?>.value(),
-        returnValueForMissingStub: _i3.Future<_i4.IncidentModel?>.value(),
-      ) as _i3.Future<_i4.IncidentModel?>);
+        returnValue: _i4.Future<_i5.IncidentModel?>.value(),
+        returnValueForMissingStub: _i4.Future<_i5.IncidentModel?>.value(),
+      ) as _i4.Future<_i5.IncidentModel?>);
 
   @override
-  _i3.Future<String?> uploadImage(_i5.File? image) => (super.noSuchMethod(
+  _i4.Future<String?> uploadImage(_i6.File? image) => (super.noSuchMethod(
         Invocation.method(
           #uploadImage,
           [image],
         ),
-        returnValue: _i3.Future<String?>.value(),
-        returnValueForMissingStub: _i3.Future<String?>.value(),
-      ) as _i3.Future<String?>);
+        returnValue: _i4.Future<String?>.value(),
+        returnValueForMissingStub: _i4.Future<String?>.value(),
+      ) as _i4.Future<String?>);
 
   @override
-  _i3.Future<List<_i4.IncidentModel>> getIncidents({DateTime? startDate}) =>
+  _i4.Future<List<_i5.IncidentModel>> getIncidents({DateTime? startDate}) =>
       (super.noSuchMethod(
         Invocation.method(
           #getIncidents,
@@ -73,53 +90,53 @@ class MockRemoteIncidentDataSource extends _i1.Mock
           {#startDate: startDate},
         ),
         returnValue:
-            _i3.Future<List<_i4.IncidentModel>>.value(<_i4.IncidentModel>[]),
+            _i4.Future<List<_i5.IncidentModel>>.value(<_i5.IncidentModel>[]),
         returnValueForMissingStub:
-            _i3.Future<List<_i4.IncidentModel>>.value(<_i4.IncidentModel>[]),
-      ) as _i3.Future<List<_i4.IncidentModel>>);
+            _i4.Future<List<_i5.IncidentModel>>.value(<_i5.IncidentModel>[]),
+      ) as _i4.Future<List<_i5.IncidentModel>>);
 
   @override
-  _i3.Stream<List<_i4.IncidentModel>> streamIncidents({String? userId}) =>
+  _i4.Stream<List<_i5.IncidentModel>> streamIncidents({String? userId}) =>
       (super.noSuchMethod(
         Invocation.method(
           #streamIncidents,
           [],
           {#userId: userId},
         ),
-        returnValue: _i3.Stream<List<_i4.IncidentModel>>.empty(),
-        returnValueForMissingStub: _i3.Stream<List<_i4.IncidentModel>>.empty(),
-      ) as _i3.Stream<List<_i4.IncidentModel>>);
+        returnValue: _i4.Stream<List<_i5.IncidentModel>>.empty(),
+        returnValueForMissingStub: _i4.Stream<List<_i5.IncidentModel>>.empty(),
+      ) as _i4.Stream<List<_i5.IncidentModel>>);
 }
 
 /// A class which mocks [LocalIncidentDataSource].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockLocalIncidentDataSource extends _i1.Mock
-    implements _i6.LocalIncidentDataSource {
+    implements _i7.LocalIncidentDataSource {
   @override
-  _i3.Future<void> saveIncident(_i4.IncidentModel? incident) =>
+  _i4.Future<void> saveIncident(_i5.IncidentModel? incident) =>
       (super.noSuchMethod(
         Invocation.method(
           #saveIncident,
           [incident],
         ),
-        returnValue: _i3.Future<void>.value(),
-        returnValueForMissingStub: _i3.Future<void>.value(),
-      ) as _i3.Future<void>);
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
 
   @override
-  _i3.Future<void> cacheIncidents(List<_i4.IncidentModel>? incidents) =>
+  _i4.Future<void> cacheIncidents(List<_i5.IncidentModel>? incidents) =>
       (super.noSuchMethod(
         Invocation.method(
           #cacheIncidents,
           [incidents],
         ),
-        returnValue: _i3.Future<void>.value(),
-        returnValueForMissingStub: _i3.Future<void>.value(),
-      ) as _i3.Future<void>);
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
 
   @override
-  List<_i4.IncidentModel> getIncidents({
+  List<_i5.IncidentModel> getIncidents({
     int? limit = 10,
     bool? offlineOnly = false,
   }) =>
@@ -132,21 +149,21 @@ class MockLocalIncidentDataSource extends _i1.Mock
             #offlineOnly: offlineOnly,
           },
         ),
-        returnValue: <_i4.IncidentModel>[],
-        returnValueForMissingStub: <_i4.IncidentModel>[],
-      ) as List<_i4.IncidentModel>);
+        returnValue: <_i5.IncidentModel>[],
+        returnValueForMissingStub: <_i5.IncidentModel>[],
+      ) as List<_i5.IncidentModel>);
 
   @override
-  _i3.Stream<List<_i4.IncidentModel>> streamIncidents({int? limit = 10}) =>
+  _i4.Stream<List<_i5.IncidentModel>> streamIncidents({int? limit = 10}) =>
       (super.noSuchMethod(
         Invocation.method(
           #streamIncidents,
           [],
           {#limit: limit},
         ),
-        returnValue: _i3.Stream<List<_i4.IncidentModel>>.empty(),
-        returnValueForMissingStub: _i3.Stream<List<_i4.IncidentModel>>.empty(),
-      ) as _i3.Stream<List<_i4.IncidentModel>>);
+        returnValue: _i4.Stream<List<_i5.IncidentModel>>.empty(),
+        returnValueForMissingStub: _i4.Stream<List<_i5.IncidentModel>>.empty(),
+      ) as _i4.Stream<List<_i5.IncidentModel>>);
 
   @override
   void disposeStream() => super.noSuchMethod(
@@ -156,4 +173,95 @@ class MockLocalIncidentDataSource extends _i1.Mock
         ),
         returnValueForMissingStub: null,
       );
+}
+
+/// A class which mocks [RemoteAuthDataSource].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockRemoteAuthDataSource extends _i1.Mock
+    implements _i8.RemoteAuthDataSource {
+  @override
+  _i4.Future<_i2.UserCredential> login({
+    required String? email,
+    required String? password,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #login,
+          [],
+          {
+            #email: email,
+            #password: password,
+          },
+        ),
+        returnValue: _i4.Future<_i2.UserCredential>.value(_FakeUserCredential_0(
+          this,
+          Invocation.method(
+            #login,
+            [],
+            {
+              #email: email,
+              #password: password,
+            },
+          ),
+        )),
+        returnValueForMissingStub:
+            _i4.Future<_i2.UserCredential>.value(_FakeUserCredential_0(
+          this,
+          Invocation.method(
+            #login,
+            [],
+            {
+              #email: email,
+              #password: password,
+            },
+          ),
+        )),
+      ) as _i4.Future<_i2.UserCredential>);
+
+  @override
+  _i4.Future<_i9.UserModel?> fetchUserById(String? id) => (super.noSuchMethod(
+        Invocation.method(
+          #fetchUserById,
+          [id],
+        ),
+        returnValue: _i4.Future<_i9.UserModel?>.value(),
+        returnValueForMissingStub: _i4.Future<_i9.UserModel?>.value(),
+      ) as _i4.Future<_i9.UserModel?>);
+
+  @override
+  _i4.Future<void> logout() => (super.noSuchMethod(
+        Invocation.method(
+          #logout,
+          [],
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
+}
+
+/// A class which mocks [LocalAuthDataSource].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockLocalAuthDataSource extends _i1.Mock
+    implements _i10.LocalAuthDataSource {
+  @override
+  _i4.Future<void> saveUser(_i9.UserModel? user) => (super.noSuchMethod(
+        Invocation.method(
+          #saveUser,
+          [user],
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
+
+  @override
+  _i4.Future<void> clearUser() => (super.noSuchMethod(
+        Invocation.method(
+          #clearUser,
+          [],
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
 }

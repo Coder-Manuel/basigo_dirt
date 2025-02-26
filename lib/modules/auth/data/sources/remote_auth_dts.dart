@@ -1,6 +1,7 @@
 import 'package:basigo_dirt/modules/auth/data/models/user.model.dart';
+import 'package:basigo_dirt/modules/auth/domain/entities/user.entity.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' hide User;
 
 abstract class RemoteAuthDataSource {
   Future<UserCredential> login({
@@ -39,7 +40,10 @@ class RemoteAuthDTSImpl implements RemoteAuthDataSource {
   }
 
   @override
-  User? get currentUser => auth.currentUser;
+  User? get currentUser {
+    if (auth.currentUser == null) return null;
+    return UserModel.fromFirebase(auth.currentUser!);
+  }
 
   @override
   Future<void> logout() {

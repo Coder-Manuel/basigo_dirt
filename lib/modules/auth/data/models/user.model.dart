@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:basigo_dirt/core/enums/auth.enum.dart';
 import 'package:basigo_dirt/modules/auth/domain/entities/user.entity.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 
 class UserModel extends User {
   UserModel({
@@ -26,6 +27,12 @@ class UserModel extends User {
         name: entity.name,
         role: entity.role,
         createdAt: entity.createdAt,
+      );
+
+  factory UserModel.fromFirebase(auth.User user) => UserModel(
+        id: user.uid,
+        name: user.displayName ?? '',
+        role: UserRole.driver,
       );
 
   Map<String, dynamic> get toMap => {
