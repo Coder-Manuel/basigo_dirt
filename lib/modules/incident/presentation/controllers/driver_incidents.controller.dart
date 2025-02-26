@@ -41,6 +41,7 @@ class DriverIncidentsController extends GetxController with StateMixin<bool> {
   }
 
   void _addItems(List<Incident> items) {
+    if (items.isEmpty && incidents.isNotEmpty) return;
     incidents.value = items;
     change(
       true,
