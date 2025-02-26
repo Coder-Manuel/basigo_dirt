@@ -18,7 +18,7 @@ Ensure you have the following installed:
 
 ### Additional Setup for Dependencies
 
-- You will need a `GoogleApiKey` in order to use location services, simply add it to the `.env` file before running the `./setup` command. Example: `GOOGLE_API_KEY=<key>`.
+- You will need a `GoogleApiKey` in order to use location services, simply add it to the `.env` file before running the `./setup` command. Example: `GOOGLE_API_KEY=<key>`. Refer to the `.env.example`
 
 ## Architecture Overview
 
