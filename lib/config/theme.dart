@@ -40,9 +40,8 @@ class Themes {
           borderSide: const BorderSide(color: Colors.grey),
         ),
       ),
-      iconTheme: const IconThemeData(
-        color: Colors.grey,
-      ),
+      iconTheme: const IconThemeData(color: Colors.grey),
+      dividerTheme: const DividerThemeData(color: Colors.grey),
       dialogTheme: const DialogTheme(
         surfaceTintColor: Colors.white,
         backgroundColor: Colors.white,
@@ -80,11 +79,11 @@ class Themes {
       ),
       textTheme: TextTheme(
         headlineSmall: Get.theme.textTheme.headlineSmall?.copyWith(
-          color: Colors.grey,
+          color: Colors.grey[600],
           fontSize: 20,
         ),
         bodySmall: Get.theme.textTheme.bodySmall?.copyWith(
-          color: Colors.grey,
+          color: Colors.grey[600],
         ),
         bodyMedium: Get.theme.textTheme.bodyMedium?.copyWith(
           color: Colors.grey[600],

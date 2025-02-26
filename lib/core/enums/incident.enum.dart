@@ -56,3 +56,29 @@ extension IncidentStatusExt on IncidentStatus {
 
   bool get isDone => this == IncidentStatus.resolved;
 }
+
+enum IncidentAnalysisFilter { today, last7Days, all }
+
+extension IncidentAnalysisFilterExt on IncidentAnalysisFilter {
+  String get title {
+    switch (this) {
+      case IncidentAnalysisFilter.all:
+      case IncidentAnalysisFilter.today:
+        return name.capitalizeFirst ?? name.toUpperCase();
+      case IncidentAnalysisFilter.last7Days:
+        return 'Last 7 Days';
+    }
+  }
+
+  DateTime? get startDate {
+    final now = DateTime.now();
+    switch (this) {
+      case IncidentAnalysisFilter.today:
+        return DateTime(now.year, now.month, now.day);
+      case IncidentAnalysisFilter.last7Days:
+        return now.subtract(const Duration(days: 7));
+      default:
+        return null;
+    }
+  }
+}

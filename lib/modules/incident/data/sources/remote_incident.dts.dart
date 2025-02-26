@@ -6,6 +6,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 abstract class RemoteIncidentDataSource {
   Future<void> saveIncident(IncidentModel incident);
   Future<String?> uploadImage(File image);
+  Future<List<IncidentModel>> getIncidents({
+    DateTime? startDate,
+  });
   Stream<List<IncidentModel>> streamIncidents({
     int limit = 10,
     List<IncidentModel>? startAfter,
@@ -28,6 +31,30 @@ class RemoteIncidentDTSImpl extends RemoteIncidentDataSource {
     return Future.value(
       'https://placehold.co/400x400/orange/white?text=Image',
     );
+  }
+
+  @override
+  Future<List<IncidentModel>> getIncidents({
+    DateTime? startDate,
+  }) async {
+    Query<IncidentModel> query = firestore
+        .collection('incidents')
+        .orderBy('createdAt', descending: true)
+        .withConverter(
+          fromFirestore: (snap, _) => IncidentModel.fromMap(snap.data() ?? {}),
+          toFirestore: (data, _) => data.toMap,
+        );
+
+    if (startDate != null) {
+      query.where(
+        'ceratedAt',
+        isGreaterThanOrEqualTo: Timestamp.fromDate(startDate),
+      );
+    }
+
+    final incendents = await query.get();
+
+    return incendents.docs.map((doc) => doc.data()).toList();
   }
 
   @override

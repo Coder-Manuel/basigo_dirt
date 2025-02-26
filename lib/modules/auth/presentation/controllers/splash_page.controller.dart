@@ -1,6 +1,6 @@
 import 'package:basigo_dirt/modules/auth/domain/usecases/current_user.usecase.dart';
 import 'package:basigo_dirt/modules/auth/presentation/pages/login.page.dart';
-import 'package:basigo_dirt/modules/incident/presentation/pages/driver_incidents_page.dart';
+import 'package:basigo_dirt/modules/incident/presentation/pages/insidents_overview_page.dart';
 import 'package:get/get.dart';
 
 class SplashPageController extends GetxController {
@@ -14,7 +14,7 @@ class SplashPageController extends GetxController {
           return Get.offNamed(LoginPage.route);
         }
 
-        return Get.offNamed(DriverIncidentsPage.route);
+        return Get.offNamed(IncidentsOverviewPage.route);
       },
     );
   }

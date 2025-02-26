@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:basigo_dirt/core/enums/incident.enum.dart';
 import 'package:basigo_dirt/core/types/repo_reponse.type.dart';
 import 'package:basigo_dirt/core/utils/error_util/error_wrapper.dart';
 import 'package:basigo_dirt/core/utils/logger.util.dart';
@@ -9,6 +10,7 @@ import 'package:basigo_dirt/modules/incident/data/models/incident.model.dart';
 import 'package:basigo_dirt/modules/incident/data/sources/local_incident.dts.dart';
 import 'package:basigo_dirt/modules/incident/data/sources/remote_incident.dts.dart';
 import 'package:basigo_dirt/modules/incident/domain/entities/incident.entity.dart';
+import 'package:basigo_dirt/modules/incident/domain/entities/incident_analysis.entity.dart';
 import 'package:basigo_dirt/modules/incident/domain/repository/incident.repository.dart';
 import 'package:get/get.dart';
 
@@ -73,6 +75,28 @@ class IncidentRepositoryImpl implements IncidentRepository {
   }
 
   @override
+  Future<RepoReponse<Incident>> updateIncident(Incident incident) async {
+    final response = await ErrorWrapper.async<RepoReponse<Incident>>(
+      () async {
+        if (!connectivityCTRL.isConnected) {
+          return FailureResponse(
+            'Youre offline, Check your internet and retry',
+          );
+        }
+        final model = IncidentModel.fromEntity(incident);
+        await remoteDataSource.saveIncident(model);
+
+        return SuccessResponse(model);
+      },
+      onError: (e) => FailureResponse('An error occured, Kindly Retry'),
+      library: _library,
+      description: 'while updating an incident',
+    );
+
+    return response!;
+  }
+
+  @override
   RepoReponse<Stream<List<Incident>>> getIncidentsStream({
     bool loadMore = false,
   }) {
@@ -101,6 +125,49 @@ class IncidentRepositoryImpl implements IncidentRepository {
       onError: (e) => FailureResponse('An error occurred, Kindly Retry'),
       library: _library,
       description: 'while getting incident streams',
+    );
+
+    return response!;
+  }
+
+  @override
+  Future<RepoReponse<IncidentAnalysis>> getIncidentAnalysis(
+    IncidentAnalysisFilter filter,
+  ) async {
+    final response = await ErrorWrapper.async<RepoReponse<IncidentAnalysis>>(
+      () async {
+        if (!connectivityCTRL.isConnected) {
+          return FailureResponse(
+            'Youre offline, Check your internet and retry',
+          );
+        }
+
+        final incidents = await remoteDataSource.getIncidents(
+          startDate: filter.startDate,
+        );
+        Map<IncidentSeverity, int> severity = {};
+        Map<IncidentStatus, int> status = {};
+
+        for (final inc in incidents) {
+          final severityKey = inc.severity;
+          severity[severityKey] = (severity[severityKey] ?? 0) + 1;
+
+          // Count statuses
+          final statusKey = inc.status;
+          status[statusKey] = (status[statusKey] ?? 0) + 1;
+        }
+
+        return SuccessResponse(
+          IncidentAnalysis(
+            total: incidents.length,
+            statuses: status,
+            severity: severity,
+          ),
+        );
+      },
+      onError: (e) => FailureResponse('An error occured, Kindly Retry'),
+      library: _library,
+      description: 'while fetching incident analysis',
     );
 
     return response!;

@@ -34,6 +34,7 @@ dependencies:
   shimmer: ^3.0.0
   ribbon_widget: ^1.0.5
   timeago: ^3.7.0
+  dropdown_button2: ^2.3.9
   flutter_easyloading: ^3.0.5
   observe_internet_connectivity: ^1.0.2
 

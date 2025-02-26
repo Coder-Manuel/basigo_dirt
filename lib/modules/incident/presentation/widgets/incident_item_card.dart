@@ -1,6 +1,7 @@
 import 'package:basigo_dirt/core/enums/incident.enum.dart';
 import 'package:basigo_dirt/core/utils/size.util.dart';
 import 'package:basigo_dirt/modules/incident/domain/entities/incident.entity.dart';
+import 'package:basigo_dirt/modules/incident/presentation/widgets/incident_action_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ribbon_widget/ribbon_widget.dart';
@@ -8,38 +9,51 @@ import 'package:timeago/timeago.dart';
 
 class IncidentItemCard extends StatelessWidget {
   final Incident incident;
+  final bool canEdit;
 
   const IncidentItemCard({
     super.key,
     required this.incident,
+    this.canEdit = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 120,
-      child: Card(
-        elevation: 1.5,
-        surfaceTintColor: incident.status.isDone
-            ? Colors.grey[700]
-            : incident.severity.color.withOpacity(0.06),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Visibility(
-          visible: incident.status.isDone,
-          replacement: _ItemCard(incident: incident),
-          child: Ribbon(
-            farLength: 50,
-            nearLength: 30,
-            title: 'Closed',
-            color: incident.status.color,
-            location: RibbonLocation.topStart,
-            titleStyle: const TextStyle(
-              fontSize: 11,
-              fontWeight: FontWeight.bold,
+      child: GestureDetector(
+        onTap: () {
+          if (canEdit) {
+            Get.bottomSheet(
+              IncidentActionSheet(incident: incident),
+              backgroundColor: Colors.white,
+              isScrollControlled: true,
+            );
+          }
+        },
+        child: Card(
+          elevation: 1.5,
+          surfaceTintColor: incident.status.isDone
+              ? Colors.grey[700]
+              : incident.severity.color.withOpacity(0.06),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Visibility(
+            visible: incident.status.isDone,
+            replacement: _ItemCard(incident: incident),
+            child: Ribbon(
+              farLength: 50,
+              nearLength: 30,
+              title: 'Closed',
+              color: incident.status.color,
+              location: RibbonLocation.topStart,
+              titleStyle: const TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.bold,
+              ),
+              child: _ItemCard(incident: incident),
             ),
-            child: _ItemCard(incident: incident),
           ),
         ),
       ),

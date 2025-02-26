@@ -1,3 +1,4 @@
+import 'package:basigo_dirt/core/enums/auth.enum.dart';
 import 'package:basigo_dirt/core/widgets/loading_shimmer.dart';
 import 'package:basigo_dirt/modules/incident/presentation/controllers/driver_incidents.controller.dart';
 import 'package:basigo_dirt/modules/incident/presentation/pages/create_incident.page.dart';
@@ -14,7 +15,8 @@ class DriverIncidentsPage extends GetView<DriverIncidentsController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading:
+            controller.userUseCase.user?.role.isDriver == false,
         title: const Text('Incidents'),
       ),
       body: Padding(
@@ -33,6 +35,9 @@ class DriverIncidentsPage extends GetView<DriverIncidentsController> {
                           padding: const EdgeInsets.only(bottom: 10),
                           child: IncidentItemCard(
                             incident: controller.incidents[i],
+                            canEdit:
+                                controller.userUseCase.user?.role.isDriver ==
+                                    false,
                           ),
                         );
                       },
@@ -46,11 +51,14 @@ class DriverIncidentsPage extends GetView<DriverIncidentsController> {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Get.toNamed(CreateIncidentPage.route),
-        child: const Icon(
-          Icons.add_rounded,
-          size: 40,
+      floatingActionButton: Visibility(
+        visible: controller.userUseCase.user?.role.isDriver == true,
+        child: FloatingActionButton(
+          onPressed: () => Get.toNamed(CreateIncidentPage.route),
+          child: const Icon(
+            Icons.add_rounded,
+            size: 40,
+          ),
         ),
       ),
     );
