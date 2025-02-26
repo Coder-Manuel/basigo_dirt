@@ -31,11 +31,6 @@ class DriverIncidentsController extends GetxController with StateMixin<bool> {
       _incidentSubscription = stream.listen(
         (data) {
           _addItems(data);
-
-          change(
-            true,
-            status: incidents.isEmpty ? RxStatus.empty() : RxStatus.success(),
-          );
         },
         onError: (e) => change(
           false,
@@ -47,6 +42,10 @@ class DriverIncidentsController extends GetxController with StateMixin<bool> {
 
   void _addItems(List<Incident> items) {
     incidents.value = items;
+    change(
+      true,
+      status: incidents.isEmpty ? RxStatus.empty() : RxStatus.success(),
+    );
   }
 
   void _dispose() {

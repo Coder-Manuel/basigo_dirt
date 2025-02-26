@@ -14,9 +14,9 @@ class LatestIncidentsView extends GetView<DriverIncidentsController> {
     return FutureBuilder(
       future: controller.getIncidents(),
       builder: (_, __) {
-        final list = controller.incidents.take(2).toList();
         return controller.obx(
           (_) {
+            final list = controller.incidents.take(2).toList();
             return SliverList.builder(
               itemCount: list.length,
               itemBuilder: (_, i) {
