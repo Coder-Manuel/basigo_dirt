@@ -41,6 +41,7 @@ class IncidentOverviewController extends GetxController with StateMixin<bool> {
         dispatch: userUseCase.user,
         status: incidentStatus.value,
         dispatchComments: commentCTRL.text.trim(),
+        updatedAt: DateTime.now(),
       ),
     );
     Loader.dismiss();
