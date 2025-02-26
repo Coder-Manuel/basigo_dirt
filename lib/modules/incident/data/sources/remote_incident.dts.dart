@@ -6,13 +6,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 abstract class RemoteIncidentDataSource {
   Future<void> saveIncident(IncidentModel incident);
   Future<String?> uploadImage(File image);
-  Future<List<IncidentModel>> getIncidents({
-    DateTime? startDate,
-  });
-  Stream<List<IncidentModel>> streamIncidents({
-    int limit = 10,
-    List<IncidentModel>? startAfter,
-  });
+  Future<List<IncidentModel>> getIncidents({DateTime? startDate});
+  Stream<List<IncidentModel>> streamIncidents({String? userId});
 }
 
 class RemoteIncidentDTSImpl extends RemoteIncidentDataSource {
@@ -46,8 +41,8 @@ class RemoteIncidentDTSImpl extends RemoteIncidentDataSource {
         );
 
     if (startDate != null) {
-      query.where(
-        'ceratedAt',
+      query = query.where(
+        'createdAt',
         isGreaterThanOrEqualTo: Timestamp.fromDate(startDate),
       );
     }
@@ -58,21 +53,17 @@ class RemoteIncidentDTSImpl extends RemoteIncidentDataSource {
   }
 
   @override
-  Stream<List<IncidentModel>> streamIncidents({
-    int limit = 10,
-    List<IncidentModel>? startAfter,
-  }) {
+  Stream<List<IncidentModel>> streamIncidents({String? userId}) {
     Query<IncidentModel> query = firestore
         .collection('incidents')
         .orderBy('createdAt', descending: true)
         .withConverter(
           fromFirestore: (snap, _) => IncidentModel.fromMap(snap.data() ?? {}),
           toFirestore: (data, _) => data.toMap,
-        )
-        .limit(limit);
+        );
 
-    if (startAfter != null) {
-      query = query.startAfter(startAfter);
+    if (userId?.isNotEmpty == true) {
+      query = query.where('driver.id', isEqualTo: userId);
     }
 
     return query.snapshots().map((snapshot) {

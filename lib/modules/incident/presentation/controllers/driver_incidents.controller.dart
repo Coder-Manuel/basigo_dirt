@@ -15,27 +15,39 @@ class DriverIncidentsController extends GetxController with StateMixin<bool> {
   StreamSubscription<List<Incident>>? _incidentSubscription;
 
   Future<void> getIncidents() async {
-    if (_incidentSubscription == null) {
-      await Future.delayed(const Duration(milliseconds: 50));
-      change(false, status: RxStatus.loading());
+    if (_incidentSubscription != null) {
+      _dispose();
     }
-    final response = incidentsStreamUseCase.call(false);
+    await Future.delayed(Duration.zero);
+    change(false, status: RxStatus.loading());
+
+    final response = incidentsStreamUseCase.call(userUseCase.user);
     response.fold((ex) {
       AppSnackBar.show(ex.message, status: SnackBarStatus.info);
     }, (stream) {
-      _incidentSubscription = stream.listen((data) {
-        _addItems(data);
+      _incidentSubscription = stream.listen(
+        (data) {
+          _addItems(data);
 
-        change(
-          true,
-          status: incidents.isEmpty ? RxStatus.empty() : RxStatus.success(),
-        );
-      });
+          change(
+            true,
+            status: incidents.isEmpty ? RxStatus.empty() : RxStatus.success(),
+          );
+        },
+        onError: (e) => change(
+          false,
+          status: RxStatus.error('Error: $e'),
+        ),
+      );
     });
   }
 
   void _addItems(List<Incident> items) {
     incidents.value = items;
+  }
+
+  void _dispose() {
+    _incidentSubscription?.cancel();
   }
 
   @override

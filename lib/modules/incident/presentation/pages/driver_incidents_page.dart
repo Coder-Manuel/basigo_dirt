@@ -1,5 +1,6 @@
 import 'package:basigo_dirt/core/enums/auth.enum.dart';
 import 'package:basigo_dirt/core/widgets/loading_shimmer.dart';
+import 'package:basigo_dirt/core/widgets/retry_widget.dart';
 import 'package:basigo_dirt/modules/incident/presentation/controllers/driver_incidents.controller.dart';
 import 'package:basigo_dirt/modules/incident/presentation/pages/create_incident.page.dart';
 import 'package:basigo_dirt/modules/incident/presentation/widgets/incident_item_card.dart';
@@ -35,9 +36,6 @@ class DriverIncidentsPage extends GetView<DriverIncidentsController> {
                           padding: const EdgeInsets.only(bottom: 10),
                           child: IncidentItemCard(
                             incident: controller.incidents[i],
-                            canEdit:
-                                controller.userUseCase.user?.role.isDriver ==
-                                    false,
                           ),
                         );
                       },
@@ -47,6 +45,10 @@ class DriverIncidentsPage extends GetView<DriverIncidentsController> {
               },
               onLoading: const LoadingShimmer(),
               onEmpty: const NoIncidentsPlaceholder(),
+              onError: (error) => RetryWidget(
+                message: error,
+                onRetry: () async => await controller.getIncidents(),
+              ),
             );
           },
         ),

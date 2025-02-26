@@ -41,10 +41,7 @@ class IncidentsOverviewPage extends GetView<IncidentOverviewController> {
                 return SliverList.builder(
                   itemCount: list.length,
                   itemBuilder: (_, i) {
-                    return IncidentItemCard(
-                      incident: list[i],
-                      canEdit: true,
-                    );
+                    return IncidentItemCard(incident: list[i]);
                   },
                 );
               },

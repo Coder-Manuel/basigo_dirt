@@ -1,3 +1,4 @@
+import 'package:basigo_dirt/core/enums/auth.enum.dart';
 import 'package:basigo_dirt/core/enums/incident.enum.dart';
 import 'package:basigo_dirt/core/widgets/app_snackbar.dart';
 import 'package:basigo_dirt/core/widgets/loader.dart';
@@ -19,6 +20,8 @@ class IncidentOverviewController extends GetxController with StateMixin<bool> {
   UpdateIncidentUseCase get updateIncidentUseCase => UpdateIncidentUseCase();
   GetIncidentAnalysisUseCase get getIncidentAnalysisUseCase =>
       GetIncidentAnalysisUseCase();
+
+  UserRole? get currentUserRole => userUseCase.user?.role;
 
   Future<void> getIncidentAnalysis() async {
     await Future.delayed(Duration.zero);
@@ -56,6 +59,7 @@ class IncidentOverviewController extends GetxController with StateMixin<bool> {
 
   Future<void> updateDisplayItems(Incident incident) async {
     incidentStatus.value = incident.status;
-    commentCTRL.text = incident.dispatchComments ?? '';
+    commentCTRL.text = incident.dispatchComments ??
+        (currentUserRole?.isDriver == true ? 'No Comments Yet' : '');
   }
 }

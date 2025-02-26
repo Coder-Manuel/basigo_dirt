@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:basigo_dirt/core/enums/auth.enum.dart';
 import 'package:basigo_dirt/core/enums/incident.enum.dart';
 import 'package:basigo_dirt/core/types/repo_reponse.type.dart';
 import 'package:basigo_dirt/core/utils/error_util/error_wrapper.dart';
 import 'package:basigo_dirt/core/utils/logger.util.dart';
 import 'package:basigo_dirt/core/widgets/offline_widget/connectivity_controller.dart';
+import 'package:basigo_dirt/modules/auth/domain/entities/user.entity.dart';
 import 'package:basigo_dirt/modules/incident/data/models/incident.model.dart';
 import 'package:basigo_dirt/modules/incident/data/sources/local_incident.dts.dart';
 import 'package:basigo_dirt/modules/incident/data/sources/remote_incident.dts.dart';
@@ -97,13 +99,15 @@ class IncidentRepositoryImpl implements IncidentRepository {
   }
 
   @override
-  RepoReponse<Stream<List<Incident>>> getIncidentsStream({
-    bool loadMore = false,
-  }) {
+  RepoReponse<Stream<List<Incident>>> getIncidentsStream({User? user}) {
     final response = ErrorWrapper.sync<RepoReponse<Stream<List<Incident>>>>(
       () {
         _remoteSubscription?.cancel();
         _localSubscription?.cancel();
+        String? userId;
+        if (user?.role == UserRole.driver) {
+          userId = user?.id;
+        }
 
         if (_incidentStreamController.isClosed) {
           _incidentStreamController =
@@ -111,18 +115,28 @@ class IncidentRepositoryImpl implements IncidentRepository {
         }
 
         if (connectivityCTRL.isConnected) {
-          _remoteSubscription = remoteDataSource
-              .streamIncidents()
-              .listen((data) => _incidentStreamController.add(data));
+          _remoteSubscription =
+              remoteDataSource.streamIncidents(userId: userId).listen(
+                    (data) => _incidentStreamController.add(data),
+                    onError: (e) => _incidentStreamController.addError(e),
+                  );
         } else {
-          _localSubscription = localDataSource
-              .streamIncidents()
-              .listen((data) => _incidentStreamController.add(data));
+          _localSubscription = localDataSource.streamIncidents().listen(
+                (data) => _incidentStreamController.add(data),
+                onError: (e) => _incidentStreamController.addError(e),
+              );
         }
 
         return SuccessResponse(_incidentStreamController.stream);
       },
-      onError: (e) => FailureResponse('An error occurred, Kindly Retry'),
+      onError: (e) {
+        if (_incidentStreamController.isClosed) {
+          return FailureResponse('An error occurred, Kindly Retry');
+        } else {
+          _incidentStreamController.addError(e);
+          return SuccessResponse(_incidentStreamController.stream);
+        }
+      },
       library: _library,
       description: 'while getting incident streams',
     );

@@ -1,5 +1,6 @@
 import 'package:basigo_dirt/core/enums/incident.enum.dart';
 import 'package:basigo_dirt/core/types/repo_reponse.type.dart';
+import 'package:basigo_dirt/modules/auth/domain/entities/user.entity.dart';
 import 'package:basigo_dirt/modules/incident/domain/entities/incident.entity.dart';
 import 'package:basigo_dirt/modules/incident/domain/entities/incident_analysis.entity.dart';
 
@@ -9,6 +10,6 @@ abstract class IncidentRepository {
   Future<RepoReponse<IncidentAnalysis>> getIncidentAnalysis(
     IncidentAnalysisFilter filter,
   );
-  RepoReponse<Stream<List<Incident>>> getIncidentsStream({bool loadMore});
+  RepoReponse<Stream<List<Incident>>> getIncidentsStream({User? user});
   void disposeStream();
 }

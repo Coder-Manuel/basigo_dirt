@@ -9,13 +9,8 @@ import 'package:timeago/timeago.dart';
 
 class IncidentItemCard extends StatelessWidget {
   final Incident incident;
-  final bool canEdit;
 
-  const IncidentItemCard({
-    super.key,
-    required this.incident,
-    this.canEdit = false,
-  });
+  const IncidentItemCard({super.key, required this.incident});
 
   @override
   Widget build(BuildContext context) {
@@ -23,13 +18,11 @@ class IncidentItemCard extends StatelessWidget {
       height: 120,
       child: GestureDetector(
         onTap: () {
-          if (canEdit) {
-            Get.bottomSheet(
-              IncidentActionSheet(incident: incident),
-              backgroundColor: Colors.white,
-              isScrollControlled: true,
-            );
-          }
+          Get.bottomSheet(
+            IncidentActionSheet(incident: incident),
+            backgroundColor: Colors.white,
+            isScrollControlled: true,
+          );
         },
         child: Card(
           elevation: 1.5,
@@ -122,8 +115,11 @@ class _ItemCard extends StatelessWidget {
                           ? Icons.done_all_rounded
                           : Icons.done_rounded,
                       color: incident.isSynced
-                          ? Get.theme.primaryColor
-                          : Colors.orange,
+                          ? incident.updatedAt != null ||
+                                  incident.dispatchComments != null
+                              ? Get.theme.primaryColor
+                              : Colors.grey[600]
+                          : const Color.fromARGB(255, 230, 138, 0),
                     )
                   ],
                 ),

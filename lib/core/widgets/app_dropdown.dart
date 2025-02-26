@@ -113,7 +113,7 @@ class AppDropDownField<T> extends StatelessWidget {
         hint: hint,
         isDense: true,
         items: items,
-        onChanged: onChanged,
+        onChanged: enabled ? onChanged : null,
         value: value,
       ),
     );

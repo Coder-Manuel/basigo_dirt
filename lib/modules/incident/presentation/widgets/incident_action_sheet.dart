@@ -1,3 +1,4 @@
+import 'package:basigo_dirt/core/enums/auth.enum.dart';
 import 'package:basigo_dirt/core/enums/incident.enum.dart';
 import 'package:basigo_dirt/core/utils/size.util.dart';
 import 'package:basigo_dirt/core/widgets/app_dropdown.dart';
@@ -113,11 +114,14 @@ class IncidentActionSheet extends GetView<IncidentOverviewController> {
               ),
               const Divider(),
               FormLabel(
-                label:
-                    'Comments/Instructions ${incident.status.isDone ? '' : '(Optional)'} ',
+                label: controller.currentUserRole?.isDriver == true
+                    ? 'Dispatch Comments/Notes'
+                    : 'Comments/Instructions ${incident.status.isDone ? '' : '(Optional)'}',
               ),
               Text(
-                'Add info to the incident.',
+                controller.currentUserRole?.isDriver == true
+                    ? 'Instructions/Comments from the dispatch'
+                    : 'Add info to the incident.',
                 style: Get.textTheme.bodyMedium,
               ),
               5.0.h,
@@ -126,7 +130,8 @@ class IncidentActionSheet extends GetView<IncidentOverviewController> {
                 maxLength: 100,
                 minLines: 1,
                 maxLines: 4,
-                enabled: !incident.status.isDone,
+                enabled: !incident.status.isDone &&
+                    controller.currentUserRole?.isDriver == false,
                 decoration: const InputDecoration(
                   fillColor: Colors.white,
                   focusColor: Colors.white,
@@ -148,7 +153,8 @@ class IncidentActionSheet extends GetView<IncidentOverviewController> {
                     width: 150,
                     height: 35,
                     child: AppDropDownField<IncidentStatus>(
-                      enabled: !incident.status.isDone,
+                      enabled: !incident.status.isDone &&
+                          controller.currentUserRole?.isDriver == false,
                       value: controller.incidentStatus.value,
                       onChanged: (v) => controller.incidentStatus.value = v,
                       items: IncidentStatus.values.map((v) {
@@ -163,7 +169,8 @@ class IncidentActionSheet extends GetView<IncidentOverviewController> {
               ),
               25.h,
               Visibility(
-                visible: !incident.status.isDone,
+                visible: !incident.status.isDone &&
+                    controller.currentUserRole?.isDriver == false,
                 child: ElevatedButton(
                   onPressed: () async => await controller.updateIncident(
                     incident,
