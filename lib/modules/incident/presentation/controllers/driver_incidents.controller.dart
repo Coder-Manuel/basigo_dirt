@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:basigo_dirt/core/widgets/app_snackbar.dart';
 import 'package:basigo_dirt/modules/auth/domain/usecases/current_user.usecase.dart';
 import 'package:basigo_dirt/modules/incident/domain/entities/incident.entity.dart';
@@ -14,14 +13,18 @@ class DriverIncidentsController extends GetxController with StateMixin<bool> {
 
   StreamSubscription<List<Incident>>? _incidentSubscription;
 
-  Future<void> getIncidents() async {
+  Future<void> getIncidents({bool reload = false}) async {
+    if (!reload && _incidentSubscription != null) {
+      return;
+    }
+
     if (_incidentSubscription != null) {
       _dispose();
     }
     await Future.delayed(Duration.zero);
     change(false, status: RxStatus.loading());
 
-    final response = incidentsStreamUseCase.call(userUseCase.user);
+    final response = incidentsStreamUseCase(userUseCase.user);
     response.fold((ex) {
       AppSnackBar.show(ex.message, status: SnackBarStatus.info);
     }, (stream) {

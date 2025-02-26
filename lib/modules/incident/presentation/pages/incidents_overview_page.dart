@@ -1,9 +1,9 @@
 import 'package:basigo_dirt/core/utils/size.util.dart';
-import 'package:basigo_dirt/modules/incident/presentation/controllers/driver_incidents.controller.dart';
+import 'package:basigo_dirt/modules/auth/presentation/widgets/logout_button.dart';
 import 'package:basigo_dirt/modules/incident/presentation/controllers/incident_overview.controller.dart';
 import 'package:basigo_dirt/modules/incident/presentation/pages/driver_incidents_page.dart';
 import 'package:basigo_dirt/modules/incident/presentation/widgets/incident_analytics_card.dart';
-import 'package:basigo_dirt/modules/incident/presentation/widgets/incident_item_card.dart';
+import 'package:basigo_dirt/modules/incident/presentation/widgets/latest_incidents_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -17,6 +17,7 @@ class IncidentsOverviewPage extends GetView<IncidentOverviewController> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: const Text('Incidents Overview'),
+        actions: const [LogoutButton()],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -34,18 +35,7 @@ class IncidentsOverviewPage extends GetView<IncidentOverviewController> {
                 ),
               ),
             ),
-            GetBuilder<DriverIncidentsController>(
-              builder: (ctrl) {
-                ctrl.getIncidents();
-                final list = ctrl.incidents.take(2).toList();
-                return SliverList.builder(
-                  itemCount: list.length,
-                  itemBuilder: (_, i) {
-                    return IncidentItemCard(incident: list[i]);
-                  },
-                );
-              },
-            ),
+            const LatestIncidentsView(),
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.only(top: 20),

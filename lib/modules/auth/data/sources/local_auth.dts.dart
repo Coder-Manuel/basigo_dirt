@@ -4,6 +4,7 @@ import 'package:hive/hive.dart';
 abstract class LocalAuthDataSource {
   Future<void> saveUser(UserModel user);
   UserModel? get currentUser;
+  Future<void> clearUser();
 }
 
 class LocalAuthDTSImpl extends LocalAuthDataSource {
@@ -30,5 +31,10 @@ class LocalAuthDTSImpl extends LocalAuthDataSource {
   Future<void> saveUser(UserModel user) async {
     await userBox.clear();
     return userBox.put('currentUser', user.toJson);
+  }
+
+  @override
+  Future<void> clearUser() {
+    return userBox.clear();
   }
 }

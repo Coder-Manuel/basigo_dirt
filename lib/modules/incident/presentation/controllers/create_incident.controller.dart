@@ -45,7 +45,7 @@ class CreateIncidentController extends GetxController {
   Future<void> reportIncident() async {
     if (formKey.currentState?.validate() == true) {
       Loader.show('Reporting Incident...');
-      final response = await createIncidentUsecase.call(
+      final response = await createIncidentUsecase(
         IncidentModel(
           title: titleCTRL.text.trim(),
           severity: severity.value!,

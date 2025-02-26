@@ -10,15 +10,17 @@ class AuthGuardMiddleware extends GetMiddleware {
 
   @override
   RouteSettings? redirect(String? route) {
-    final userUsecase = CurrentUserUseCase();
+    if (Get.currentRoute != LoginPage.route) {
+      final userUsecase = CurrentUserUseCase();
 
-    if (userUsecase.user == null) {
-      AppSnackBar.show(
-        "Kindly login to proceed",
-        status: SnackBarStatus.info,
-      );
+      if (userUsecase.user == null) {
+        AppSnackBar.show(
+          "Kindly login to proceed",
+          status: SnackBarStatus.info,
+        );
 
-      return RouteSettings(name: LoginPage.route);
+        return RouteSettings(name: LoginPage.route);
+      }
     }
 
     return null;

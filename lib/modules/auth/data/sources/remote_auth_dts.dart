@@ -8,6 +8,7 @@ abstract class RemoteAuthDataSource {
     required String password,
   });
   Future<UserModel?> fetchUserById(String id);
+  Future<void> logout();
   User? get currentUser;
 }
 
@@ -39,4 +40,9 @@ class RemoteAuthDTSImpl implements RemoteAuthDataSource {
 
   @override
   User? get currentUser => auth.currentUser;
+
+  @override
+  Future<void> logout() {
+    return auth.signOut();
+  }
 }

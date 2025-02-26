@@ -51,7 +51,7 @@ class AuthRepositoryImpl implements AuthRepository {
           return FailureResponse('User details not found');
         }
 
-        localAuthDTS.saveUser(user);
+        await localAuthDTS.saveUser(user);
         return SuccessResponse(user);
       },
       onError: (e) {
@@ -65,6 +65,23 @@ class AuthRepositoryImpl implements AuthRepository {
       },
       library: _library,
       description: 'while loggin user',
+    );
+
+    return response!;
+  }
+
+  @override
+  Future<RepoReponse<void>> logout() async {
+    final response = await ErrorWrapper.async<RepoReponse<void>>(
+      () async {
+        await localAuthDTS.clearUser();
+        await remoteAuthDTS.logout();
+
+        return SuccessResponse(null);
+      },
+      onError: (_) => FailureResponse('An error occured'),
+      library: _library,
+      description: 'while log-out processing',
     );
 
     return response!;

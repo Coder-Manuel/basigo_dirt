@@ -3,14 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class NoIncidentsPlaceholder extends StatelessWidget {
+  final double topMargin;
+
   const NoIncidentsPlaceholder({
     super.key,
+    this.topMargin = 150,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 150),
+      padding: EdgeInsets.only(top: topMargin),
       child: Column(
         children: [
           Row(
@@ -25,8 +28,9 @@ class NoIncidentsPlaceholder extends StatelessWidget {
           ),
           10.h,
           Text(
-            'No Incidents Yet',
-            style: Get.textTheme.headlineSmall,
+            'No Incidents Yet\nNew Incidents will be automatically updated here',
+            textAlign: TextAlign.center,
+            style: Get.textTheme.headlineSmall?.copyWith(fontSize: 18),
           ),
         ],
       ),

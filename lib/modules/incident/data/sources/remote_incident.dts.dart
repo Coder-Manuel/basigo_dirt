@@ -58,7 +58,7 @@ class RemoteIncidentDTSImpl extends RemoteIncidentDataSource {
     if (startDate != null) {
       query = query.where(
         'createdAt',
-        isGreaterThanOrEqualTo: Timestamp.fromDate(startDate),
+        isGreaterThanOrEqualTo: startDate.toIso8601String(),
       );
     }
 

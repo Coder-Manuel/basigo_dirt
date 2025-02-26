@@ -7,5 +7,6 @@ abstract class AuthRepository {
     required String password,
   });
   Future<RepoReponse<User?>> fetchUser(String id);
+  Future<RepoReponse<void>> logout();
   User? get currentUser;
 }

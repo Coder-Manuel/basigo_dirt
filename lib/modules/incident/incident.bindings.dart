@@ -14,12 +14,16 @@ class IncidentBindings extends Bindings {
       () async => await LocalIncidentDTSImpl().init(),
       permanent: true,
     );
-    Get.lazyPut<RemoteIncidentDataSource>(() => RemoteIncidentDTSImpl());
+    Get.lazyPut<RemoteIncidentDataSource>(
+      () => RemoteIncidentDTSImpl(),
+      fenix: true,
+    );
     Get.lazyPut<IncidentRepository>(
       () => IncidentRepositoryImpl(
         localDataSource: Get.find<LocalIncidentDataSource>(),
         remoteDataSource: Get.find<RemoteIncidentDataSource>(),
       ),
+      fenix: true,
     );
 
     Get.lazyPut(() => DriverIncidentsController(), fenix: true);

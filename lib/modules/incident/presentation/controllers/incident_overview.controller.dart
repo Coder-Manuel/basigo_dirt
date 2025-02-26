@@ -26,7 +26,7 @@ class IncidentOverviewController extends GetxController with StateMixin<bool> {
   Future<void> getIncidentAnalysis() async {
     await Future.delayed(Duration.zero);
     change(false, status: RxStatus.loading());
-    final response = await getIncidentAnalysisUseCase.call(
+    final response = await getIncidentAnalysisUseCase(
       analysisFilter.value,
     );
     change(false, status: RxStatus.success());
@@ -39,7 +39,7 @@ class IncidentOverviewController extends GetxController with StateMixin<bool> {
 
   Future<void> updateIncident(Incident incident) async {
     Loader.show('Updating...');
-    final response = await updateIncidentUseCase.call(
+    final response = await updateIncidentUseCase(
       IncidentModel.fromEntity(incident).copyWith(
         dispatch: userUseCase.user,
         status: incidentStatus.value,

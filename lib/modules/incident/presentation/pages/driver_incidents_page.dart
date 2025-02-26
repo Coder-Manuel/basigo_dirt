@@ -1,6 +1,7 @@
 import 'package:basigo_dirt/core/enums/auth.enum.dart';
 import 'package:basigo_dirt/core/widgets/loading_shimmer.dart';
 import 'package:basigo_dirt/core/widgets/retry_widget.dart';
+import 'package:basigo_dirt/modules/auth/presentation/widgets/logout_button.dart';
 import 'package:basigo_dirt/modules/incident/presentation/controllers/driver_incidents.controller.dart';
 import 'package:basigo_dirt/modules/incident/presentation/pages/create_incident.page.dart';
 import 'package:basigo_dirt/modules/incident/presentation/widgets/incident_item_card.dart';
@@ -19,6 +20,12 @@ class DriverIncidentsPage extends GetView<DriverIncidentsController> {
         automaticallyImplyLeading:
             controller.userUseCase.user?.role.isDriver == false,
         title: const Text('Incidents'),
+        actions: [
+          Visibility(
+            visible: controller.userUseCase.user?.role.isDriver == true,
+            child: const LogoutButton(),
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -47,7 +54,9 @@ class DriverIncidentsPage extends GetView<DriverIncidentsController> {
               onEmpty: const NoIncidentsPlaceholder(),
               onError: (error) => RetryWidget(
                 message: error,
-                onRetry: () async => await controller.getIncidents(),
+                onRetry: () async => await controller.getIncidents(
+                  reload: true,
+                ),
               ),
             );
           },
